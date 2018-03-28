@@ -59,3 +59,57 @@ call az webapp deployment source config --name BeaconWebApp2 -g Beacon_ResourceG
 call az webapp browse --name BeaconWebApp1
 call az webapp browse --name BeaconWebApp2
 
+echo "First SQL Servers deployed to Webapp1 region West Europe"
+
+REM Set admin login and password for First Server
+set adminlogin=Server1Admin
+set password=Winter011
+set resourcegroup=Beacon_ResourceGroup
+
+REM Logical name for First SQL Server
+set server1name=beacon-serv1
+
+REM The ip address range to allow access to the DB
+set startip=0.0.0.0
+set endip=255.255.255.255
+
+REM create First logical server in the resource group
+call az sql server create -n %server1name% -g Beacon_ResourceGroup -l westeurope --admin-user %adminlogin% --admin-password %password%
+
+echo "Configuring Firewall Rule for First Server
+
+call az sql server firewall-rule create -g %resourcegroup% --server %server1name% -n AllowEveryOne ^
+ ^--start-ip-address %startip% --end-ip-address %endip%
+ 
+echo "Second SQL Server deployed to Webapp2 region North Europe"
+ 
+REM Set admin login and password for Second Server
+set adminlogin=Server2Admin
+set password=Winter011
+
+REM Logical name for Second SQL Server
+set server2name=beacon-serv2
+
+REM Create Second logical server in the resource group
+call az sql server create -n %server2name% -g Beacon_ResourceGroup -l Northeurope --admin-user %adminlogin% --admin-password %password%
+
+echo "Configuring Firewall Rule for Second Server
+
+call az sql server firewall-rule create -g %resourcegroup% --server %server2name% -n AllowEveryOne ^
+ ^--start-ip-address %startip% --end-ip-address %endip%
+
+set db1=pluto
+set db2=mars
+ 
+echo "Creating Database on First Server"
+
+REM Create a first database on first SQL server with zone redundancy as true
+call az sql db create -g %resourcegroup% -s %server1name% -n %db1% --service-objective S0 
+
+echo "Creating Second Database on second Server"
+REM Create a database in second server with zone redundancy as true
+call az sql db create -g %resourcegroup% -s %server2name% -n %db2% --service-objective S0 
+ 
+
+
+
