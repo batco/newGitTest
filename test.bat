@@ -51,9 +51,9 @@ Call az webapp show --name BeaconWebApp2
 
 REM This function enables Continuous deployment configuration from Github from both azure webapps
 call az webapp deployment source config --name BeaconWebApp1 -g Beacon_ResourceGroup ^
- ^--repo-url https://github.com/batco/newGitTest.git --branch master --git-token efa83e85d3cc3eddd7c5a7df702ca2feed83efef
+ ^--repo-url https://github.com/batco/newGitTest.git --branch master --git-token 8390f79fdd9c1d993559e9dcde8bb2fe2624760d
 call az webapp deployment source config --name BeaconWebApp2 -g Beacon_ResourceGroup ^
- ^--repo-url https://github.com/batco/newGitTest.git --branch master --git-token efa83e85d3cc3eddd7c5a7df702ca2feed83efef
+ ^--repo-url https://github.com/batco/newGitTest.git --branch master --git-token 8390f79fdd9c1d993559e9dcde8bb2fe2624760d
 
  REM This function opens up the WebApps
 call az webapp browse --name BeaconWebApp1
@@ -106,16 +106,16 @@ set db2=mars
 echo "Creating Database on First Server"
 
 REM Create a first database on first SQL server with zone redundancy as true
-call az sql db create -g %resourcegroup% -s %server1name% -n %db1% --service-objective S0 
+call az sql db create -g %resourcegroup% -s %server1name% -n %db1%  --no-wait --service-objective S0
 
 echo "Creating Second Database on second Server"
 REM Create a database in second server with zone redundancy as true
-call az sql db create -g %resourcegroup% -s %server2name% -n %db2% --service-objective S0 
+call az sql db create -g %resourcegroup% -s %server2name% -n %db2%  --no-wait --service-objective S0 
 
 REM This function creates availability set
 echo Creating Availability Set
 
-call az vm availability-set create BeaconAvSet -g %resourcegroup% --location westus --platform-fault-domain-count 2 ^
+call az vm availability-set create -n BeaconAvSet -g %resourcegroup% --location westus --platform-fault-domain-count 2 ^
 	^--platform-update-domain-count 2 
 
 REM This function creates two Virtual Machines in the default resource group
@@ -125,10 +125,10 @@ set user=olanrewaju
 set pass=Winter0111984
 
 call az vm create -n BeaconVM1 -g %resourcegroup% --location westus --admin-user %user% ^
-	^--admin-password %pass% --image ubuntuLTS --availability-set BeaconAvSet
+	^--admin-password %pass% --image ubuntuLTS --availability-set BeaconAvSet --no-wait
 	
 call az vm create -n BeaconVM2 -g %resourcegroup% --location westus --admin-user %user% ^
-	^--admin-password %pass% --image ubuntuLTS --availability-set BeaconAvSet
+	^--admin-password %pass% --image ubuntuLTS --availability-set BeaconAvSet --no-wait
 	
 REM This function Creates a Backup Vault where Backup Copies, policies and recovery points are stored
 echo Creating BackUpVault
