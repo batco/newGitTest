@@ -1,6 +1,6 @@
 @echo off
 
 call az webapp deployment source config --name BeaconWebApp1 -g Beacon_ResourceGroup ^
- ^--repo-url https://github.com/batco/newGitTest.git --branch master --git-token efa83e85d3cc3eddd7c5a7df702ca2feed83efef
+ ^--repo-url https://github.com/batco/newGitTest.git --branch master --git-token 1d3f6833fdc29c962a3e4f1c1c2f7deb3904be4c
 
 
