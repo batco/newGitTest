@@ -15,8 +15,10 @@ call az group wait --name Beacon_ResourceGroup --deleted
 
 
 REM Create Resource group in UKWest region
+echo Creating Resource Group for Beacon Inc
 call az group create -l uksouth -n Beacon_ResourceGroup 
 
+REM This function places the CLI in a wait state until the resource is created
 call az group wait --name Beacon_ResourceGroup --created
 
 REM Make this the default Resource Group
@@ -24,10 +26,12 @@ call az configure --defaults group=Beacon_ResourceGroup
 call az group list --output table
 
 REM Create a storage account
+echo Creating Storage Account for Beacon In Resource Group
 call az storage account create -n beaconincstorage -g Beacon_ResourceGroup -l ukwest --sku Standard_LRS
 call az storage account list --output table
 
 REM This function creates service plan at two different locations
+echo Creating Two App Service Plan
 call az appservice plan create -g Beacon_ResourceGroup -n BeaconAppServPlan1 --number-of-workers 3 --sku B1 -l westeurope
 call az appservice plan create -g Beacon_ResourceGroup -n BeaconAppServPlan2 --number-of-workers 3 --sku B1 -l Northeurope
 
@@ -35,6 +39,7 @@ REM Confirmation of successful Service Plan Creation
 call az appservice plan list --output table
 
 REM Two WebApp created with each mapped to different service plan locations
+echo Creating Two Web Apps for each App Service Plan
 call az webapp create -g Beacon_ResourceGroup -p BeaconAppServPlan1 -n BeaconWebApp1
 call az webapp create -g Beacon_ResourceGroup -p BeaconAppServPlan2 -n BeaconWebApp2
 
@@ -74,6 +79,7 @@ set startip=0.0.0.0
 set endip=255.255.255.255
 
 REM create First logical server in the resource group
+echo Creating First logical Server
 call az sql server create -n %server1name% -g Beacon_ResourceGroup -l westeurope --admin-user %adminlogin% --admin-password %password%
 
 echo "Configuring Firewall Rule for First Server
@@ -91,6 +97,7 @@ REM Logical name for Second SQL Server
 set server2name=beacon-serv2
 
 REM Create Second logical server in the resource group
+echo Creating second Logical Server
 call az sql server create -n %server2name% -g Beacon_ResourceGroup -l Northeurope --admin-user %adminlogin% --admin-password %password%
 
 echo "Configuring Firewall Rule for Second Server
@@ -127,6 +134,10 @@ call az vm create -n BeaconVM1 -g %resourcegroup% --location westus --admin-user
 	
 call az vm create -n BeaconVM2 -g %resourcegroup% --location westus --admin-user %user% ^
 	^--admin-password %pass% --image ubuntuLTS --availability-set BeaconAvSet
+	
+REM This function Creates a Backup Vault where Backup Copies, policies and recovery points are stored
+echo Creating BackUpVault
+call az backup vault create -l canadacentral -n BeaconVaultBkUp -g %resourcegroup%
 	
 
  
