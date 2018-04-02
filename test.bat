@@ -3,16 +3,11 @@
 REM call ResourceGroup = 'Beacon_ResourceGroup'
 
 REM Get updates of Azure Packages from Github
-REM call npm install -g azure-cli
+echo Installing Azure Packages from Github
+call npm install -g azure-cli
 
+This Function authenticates Login
 call az login
-
-REM Delete current Resource Group
-call az group delete -n Beacon_ResourceGroup --no-wait --yes
-
-REM Place the CLI in wait state until a condition is met
-call az group wait --name Beacon_ResourceGroup --deleted
-
 
 REM Create Resource group in UKWest region
 echo Creating Resource Group for Beacon Inc
