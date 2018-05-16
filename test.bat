@@ -51,9 +51,9 @@ Call az webapp show --name BeaconWebApp2
 
 REM This function enables Continuous deployment configuration from Github from both azure webapps
 call az webapp deployment source config --name BeaconWebApp1 -g Beacon_ResourceGroup ^
- ^--repo-url https://github.com/batco/newGitTest.git --branch master --git-token aca8c52e664d3465f4368f0cce45460edbc5e94d
+ ^--repo-url https://github.com/batco/newGitTest.git --branch master --git-token 48f58118280f665fa7191c27f88e83274dc69c33
 call az webapp deployment source config --name BeaconWebApp2 -g Beacon_ResourceGroup ^
- ^--repo-url https://github.com/batco/newGitTest.git --branch master --git-token aca8c52e664d3465f4368f0cce45460edbc5e94d
+ ^--repo-url https://github.com/batco/newGitTest.git --branch master --git-token 48f58118280f665fa7191c27f88e83274dc69c33
 
  REM This function opens up the WebApps
 call az webapp browse --name BeaconWebApp1
