@@ -6,7 +6,7 @@ REM Get updates of Azure Packages from Github
 echo Installing Azure Packages from Github
 call npm install -g azure-cli
 
-This Function authenticates Login
+REM This Function authenticates Login
 call az login
 
 REM Create Resource group in UKWest region
